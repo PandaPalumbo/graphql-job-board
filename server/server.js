@@ -4,6 +4,8 @@ const express = require('express');
 const expressJwt = require('express-jwt');
 const jwt = require('jsonwebtoken');
 const db = require('./db');
+const {ApolloServer, gql} = require('apollo-server-express');
+const fs = require('fs');
 
 const port = 9000;
 const jwtSecret = Buffer.from('Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt', 'base64');
@@ -13,6 +15,17 @@ app.use(cors(), bodyParser.json(), expressJwt({
   secret: jwtSecret,
   credentialsRequired: false
 }));
+
+//GraphQL Support
+//schema
+const typeDefs = gql(fs.readFileSync('./schema.graphql', {encoding: 'utf8'}));
+//return funcs given query
+const resolvers = require('./resolvers');
+//setup apollo pass schema and resolvs
+const apolloServer = new ApolloServer(({typeDefs, resolvers}));
+//adds apollo to express and can supply the url path to the graphql UI
+apolloServer.applyMiddleware({app, path:'/graphql'});
+
 
 app.post('/login', (req, res) => {
   const {email, password} = req.body;

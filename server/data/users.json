@@ -10,5 +10,11 @@
     "email": "bob@goobook.co",
     "password": "bob123",
     "companyId": "SJV0-wdOM"
+  },
+  {
+    "id": "asdfadsfdasf",
+    "email": "matt@test.net",
+    "password": "Chicago1.",
+    "companyId": "SJV0-wdOM"
   }
 ]
