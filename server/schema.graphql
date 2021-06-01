@@ -1,14 +1,22 @@
 type Query {
 #    [] signifies an array of given type
-    jobs: [Job],
+    jobs: [Job]
+    job(id: ID!): Job,
+    company(id: ID!): Company,
     companies: [Company]
 }
 
 type Company {
     id: ID!
     name: String
-    description: String
+    description: String,
+    jobs: [Job]
 }
+
+type Mutation {
+    createJob(input: CreateJobInput): Job
+}
+
 type Job {
 #    ! denotes cannot be null
     id: ID!
@@ -17,3 +25,8 @@ type Job {
     company: Company
 }
 
+input CreateJobInput {
+    companyId: ID
+    title: String
+    description: String
+}
