@@ -21,8 +21,10 @@ app.use(cors(), bodyParser.json(), expressJwt({
 const typeDefs = gql(fs.readFileSync('./schema.graphql', {encoding: 'utf8'}));
 //return funcs given query
 const resolvers = require('./resolvers');
+
+const context = ({req}) => ({  user: req.user && db.users.get(req.user.sub)})
 //setup apollo pass schema and resolvs
-const apolloServer = new ApolloServer(({typeDefs, resolvers}));
+const apolloServer = new ApolloServer(({typeDefs, resolvers, context}));
 //adds apollo to express and can supply the url path to the graphql UI
 apolloServer.applyMiddleware({app, path:'/graphql'});
 
